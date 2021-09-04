@@ -38,7 +38,7 @@ def get_weather(message):
             pogodka = r.json()
             bot.reply_to(message, parse(pogodka))
     except NameError:
-        bot.reply_to(message, 'Incorrect, try again')
+        bot.send_message(message.chat.id, 'Incorrect, try again')
 
 
 bot.polling()
