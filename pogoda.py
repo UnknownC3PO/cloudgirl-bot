@@ -40,7 +40,7 @@ def get_weather(message):
         else:
             bot.reply_to(message, 'Incorrect, try again')
     except NameError:
-        print('Incorrect')
+        pass
 
 
 bot.polling()
