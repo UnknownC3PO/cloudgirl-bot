@@ -1,1 +1,4 @@
-
+*.txt
+config.py
+static
+__pycache__
