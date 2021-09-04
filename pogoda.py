@@ -2,15 +2,27 @@ import telebot
 import requests
 import time
 import config
+from telebot import types
 
 bot = telebot.TeleBot(config.TOKEN)
+user_data=[]
 
 
 @bot.message_handler(commands=['start'])
 def start(message):
     sti = open('static/AnimatedSticker.tgs', 'rb')
+    markup = types.InlineKeyboardMarkup(row_width=1)
+    item = types.InlineKeyboardMarkup('Мой город', callback_data='city_cache')
+    markup.add(item)
     bot.send_sticker(message.chat.id, sti)
-    bot.send_message(message.chat.id, 'Hello! What city do you live in ?')
+    bot.send_message(message.chat.id, 'Hello! What city do you live in ?', reply_markup=markup)
+
+@bot.callback_query_handler(func=lambda call:True)
+def callback(call):
+    if call.message:
+        if message.from_user.id not in user_data:
+            user_data.append(message.from_user.id)
+            bot.send_message(call.message.chat.id, 'Pls, write your city here, if you want add in hot_list')
 
 
 @bot.message_handler(commands=['help'])
