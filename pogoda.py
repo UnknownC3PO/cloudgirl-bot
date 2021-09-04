@@ -37,8 +37,10 @@ def get_weather(message):
         if r.status_code == 200:
             pogodka = r.json()
             bot.reply_to(message, parse(pogodka))
+        else:
+            bot.reply_to(message, 'Incorrect, try again')
     except NameError:
-        bot.send_message(message.chat.id, 'Incorrect, try again')
+        print('Incorrect')
 
 
 bot.polling()
