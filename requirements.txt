@@ -1,3 +1,2 @@
 pyTelegramBotApi
-Flask
-gunicorn
+
