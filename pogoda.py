@@ -68,7 +68,9 @@ def but_ton(message):
             except NameError:
                 bot.reply_to(message, 'Incorrect, try again')
     user_data.clear()
-
+    
+server = Flask(__name__)
+    
 @server.route("/")
 def webhook():
     bot.remove_webhook()
