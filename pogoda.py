@@ -67,12 +67,21 @@ def but_ton(message):
                 bot.reply_to(message, 'Incorrect, try again')
     user_data.clear()
 
+@server.route('/' + config.TOKEN, methods=['POST'])
+def getMessage():
+    json_string = request.get_data().decode('utf-8')
+    update = telebot.types.Update.de_json(json_string)
+    bot.process_new_updates([update])
+    return "!", 200
 
 
-PORT = int(os.environ.get('PORT', '8443'))
-updater = Updater(config.TOKEN)
-updater.start_webhook(listen="0.0.0.0",
-                      port=PORT,
-                      url_path=config.TOKEN,
-                      webhook_url="https://cloudgirl-bot.herokuapp.com/" + config.TOKEN)
-updater.idle()
+@server.route("/")
+def webhook():
+    bot.remove_webhook()
+    bot.set_webhook(url='https://cloudgirl-bot.herokuapp.com/' + config.TOKEN)
+    return "!", 200
+
+
+if __name__ == "__main__":
+    server.run(host="0.0.0.0", port=int(os.environ.get('PORT', 5000)))
+
