@@ -1,2 +1,2 @@
 worker: python pogoda.py
-web: uvicorn main:app --reload --host 0.0.0.0 --port $PORT
+web: gunicorn main:app --reload --host 0.0.0.0 --port $PORT
