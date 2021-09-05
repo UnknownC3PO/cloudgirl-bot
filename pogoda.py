@@ -70,7 +70,7 @@ def but_ton(message):
                 bot.reply_to(message, 'Incorrect, try again')
     user_data.clear()
 
-@server.route('/' + TOKEN, methods=['POST'])
+@server.route('/' + config.TOKEN, methods=['POST'])
 def getMessage():
     json_string = request.get_data().decode('utf-8')
     update = telebot.types.Update.de_json(json_string)
@@ -81,7 +81,7 @@ def getMessage():
 @server.route("/")
 def webhook():
     bot.remove_webhook()
-    bot.set_webhook(url='https://your_heroku_project.com/' + TOKEN)
+    bot.set_webhook(url='https://cloudgirl-bot.herokuapp.com/' + config.TOKEN)
     return "!", 200
 
 server.run(host="0.0.0.0", port=int(os.environ.get('PORT', 5000)))
