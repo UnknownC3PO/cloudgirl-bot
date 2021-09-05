@@ -66,16 +66,4 @@ def but_ton(message):
     user_data.clear()
 
 
-# @bot.message_handler(func=lambda m: True)
-# def get_weather(message):
-#    try:
-#        url = f'http://api.openweathermap.org/data/2.5/weather?q={message.text}&appid={config.API_key}'
-#        r = requests.get(url)
-#        if r.status_code == 200:
-#            pogodka = r.json()
-#            bot.reply_to(message, parse(pogodka))
-#    except NameError:
-#        bot.reply_to(message, 'Incorrect, try again')
-
-
 bot.polling()
