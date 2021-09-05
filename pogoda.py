@@ -67,5 +67,4 @@ def but_ton(message):
                 bot.reply_to(message, 'Incorrect, try again')
     user_data.clear()
 
-
-
+bot.polling(none_stop=True)
