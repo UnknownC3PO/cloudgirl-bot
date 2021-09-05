@@ -4,12 +4,15 @@ import time
 import config
 from telebot import types
 import os
+from flask import Flask, request
 
 
 
 bot = telebot.TeleBot(config.TOKEN)
 
 user_data = {}
+
+server = Flask(__name__)
 
 @bot.message_handler(commands=['start'])
 def start(message):
