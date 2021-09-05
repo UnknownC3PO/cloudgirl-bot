@@ -71,11 +71,8 @@ def but_ton(message):
 
 PORT = int(os.environ.get('PORT', '8443'))
 updater = Updater(config.TOKEN)
-# add handlers
-@server.route("/")
-def webhook():
-    updater.start_webhook(listen="0.0.0.0",
-                          port=PORT,
-                          url_path=config.TOKEN,
-                          webhook_url="https://cloudgirl-bot.herokuapp.com/" + config.TOKEN)
+updater.start_webhook(listen="0.0.0.0",
+                      port=PORT,
+                      url_path=config.TOKEN,
+                      webhook_url="https://cloudgirl-bot.herokuapp.com/" + config.TOKEN)
 updater.idle()
