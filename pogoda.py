@@ -2,8 +2,11 @@ import telebot
 import requests
 import time
 import config
+from telebot import types
 
 bot = telebot.TeleBot(config.TOKEN)
+
+user_data = {}
 
 
 @bot.message_handler(commands=['start'])
@@ -30,17 +33,49 @@ def parse(pogoda):
 
 
 @bot.message_handler(func=lambda m: True)
-def get_weather(message):
-    try:
-        url = f'http://api.openweathermap.org/data/2.5/weather?q={message.text}&appid={config.API_key}'
-        r = requests.get(url)
-        if r.status_code == 200:
-            pogodka = r.json()
-            bot.reply_to(message, parse(pogodka))
+def but_ton(message):
+    markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+    item = types.KeyboardButton(f'{message.text}')
+    markup.add(item)
+    user_data[message.from_user.id] = f'{message.text}'
+    with open('user_data.txt', 'r') as db:
+        if str(message.from_user.id) not in db.read():
+            with open('user_data.txt', 'a') as db_r:
+                db_r.write(f'{user_data}\n')
+                try:
+                    url = f'http://api.openweathermap.org/data/2.5/weather?q={message.text}&appid={config.API_key}'
+                    r = requests.get(url)
+                    if r.status_code == 200:
+                        pogodka = r.json()
+                        bot.send_message(message.chat.id, parse(pogodka), reply_markup=markup)
+                    else:
+                        bot.send_message(message.chat.id, 'Wrong city')
+                except NameError:
+                    bot.reply_to(message, 'Incorrect, try again')
         else:
-            bot.reply_to(message, 'Incorrect, try again')
-    except NameError:
-        pass
+            try:
+                url = f'http://api.openweathermap.org/data/2.5/weather?q={message.text}&appid={config.API_key}'
+                r = requests.get(url)
+                if r.status_code == 200:
+                    pogodka = r.json()
+                    bot.reply_to(message, parse(pogodka))
+                else:
+                    bot.send_message(message.chat.id, 'Wrong city')
+            except NameError:
+                bot.reply_to(message, 'Incorrect, try again')
+    user_data.clear()
+
+
+# @bot.message_handler(func=lambda m: True)
+# def get_weather(message):
+#    try:
+#        url = f'http://api.openweathermap.org/data/2.5/weather?q={message.text}&appid={config.API_key}'
+#        r = requests.get(url)
+#        if r.status_code == 200:
+#            pogodka = r.json()
+#            bot.reply_to(message, parse(pogodka))
+#    except NameError:
+#        bot.reply_to(message, 'Incorrect, try again')
 
 
 bot.polling()
