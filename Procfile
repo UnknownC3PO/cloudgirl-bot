@@ -1,2 +1,2 @@
-worker: python pogoda.py
+web: gunicorn run_server:server
 
