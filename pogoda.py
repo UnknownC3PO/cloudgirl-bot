@@ -67,5 +67,6 @@ def but_ton(message):
                 bot.reply_to(message, 'Incorrect, try again')
     user_data.clear()
     
-bot.polling()
+if __name__ == '__main__':
+    bot.polling(none_stop=True)
 
