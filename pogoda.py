@@ -74,7 +74,6 @@ def but_ton(message):
                     bot.send_message(message.chat.id, 'Wrong city')
             except NameError:
                 bot.reply_to(message, 'Incorrect, try again')
-    user_data.clear()
 
 
 if __name__ == '__main__':
