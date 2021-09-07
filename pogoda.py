@@ -3,12 +3,15 @@ import requests
 import time
 import config
 from telebot import types
+import json
 
+API = '1771722323:AAFcBrg-MdbkAHjMVZMfST89xhvoYEGSwTg'
+bot = telebot.TeleBot(API)
 
+user_data = {'users': []}
 
-bot = telebot.TeleBot(config.TOKEN)
-
-user_data = {}
+with open('db.json', 'w', encoding='utf-8') as db:
+    json.dump(user_data, db, indent=4)
 
 
 @bot.message_handler(commands=['start'])
@@ -39,11 +42,18 @@ def but_ton(message):
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
     item = types.KeyboardButton(f'{message.text}')
     markup.add(item)
-    user_data[message.from_user.id] = f'{message.text}'
-    with open('user_data.txt', 'r') as db:
-        if str(message.from_user.id) not in db.read():
-            with open('user_data.txt', 'a') as db_r:
-                db_r.write(f'{user_data}\n')
+    with open('db.json', 'r', encoding='utf-8') as d:
+        text_d = json.load(d)
+        true_list = [True for i in text_d.get('users') if str(message.chat.id) in i]
+        if True not in true_list:
+            new_user = {}
+            users = text_d.get('users')
+            new_user[message.chat.id] = message.text
+            users.append(new_user)
+            user_data['users'] = users
+            with open('db.json', 'w', encoding='utf-8') as db_w:
+                json.dump(user_data, db_w, indent=4)
+                del new_user
                 try:
                     url = f'http://api.openweathermap.org/data/2.5/weather?q={message.text}&appid={config.API_key}'
                     r = requests.get(url)
@@ -66,7 +76,7 @@ def but_ton(message):
             except NameError:
                 bot.reply_to(message, 'Incorrect, try again')
     user_data.clear()
-    
+
+
 if __name__ == '__main__':
     bot.polling(none_stop=True)
-
