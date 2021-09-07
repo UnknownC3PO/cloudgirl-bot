@@ -5,8 +5,7 @@ import config
 from telebot import types
 import json
 
-API = '1771722323:AAFcBrg-MdbkAHjMVZMfST89xhvoYEGSwTg'
-bot = telebot.TeleBot(API)
+bot = telebot.TeleBot(config.TOKEN)
 
 user_data = {'users': []}
 
