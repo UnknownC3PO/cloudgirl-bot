@@ -1,4 +1,4 @@
-*.txt
-config.py
-static
-__pycache__
+env/
+venv/
+*.pyc
+__pycache__/
