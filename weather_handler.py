@@ -1,12 +1,10 @@
 import telebot
 import config
 from telebot import types
-from data_b import *
-from get_weather import *
+import data_b
+import get_weather
 
 bot = telebot.TeleBot(config.TOKEN)
-del_u = ['Del', 'del', 'DEL']
-add_u = ['Add', 'add', 'ADD']
 
 
 @bot.message_handler(commands=['start'])
@@ -22,19 +20,19 @@ def helper(message):
 
 
 @bot.message_handler(content_types=['text'])
-def add_del(message):
-    if message.text[0:3] in add_u:
+def change(message):
+    if message.text[0:3].lower() == 'add':
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
         item = types.KeyboardButton(f'{message.text[4:]}')
         markup.add(item)
-        if create_user(message.chat.id, message.text[4:]) == 'User already exists.':
-            bot.send_message(message.chat.id, 'User already exists.')
-        else:
+        if data_b.get_user(message.chat.id, message.text[4:]):
             bot.send_message(message.chat.id, 'Added.', reply_markup=markup)
-    elif message.text[0:3] in del_u:
-        bot.send_message(message.chat.id, del_user(message.chat.id, message.text[4:]))
+        else:
+            bot.send_message(message.chat.id, 'User already exists')
+    elif message.text[0:3].lower() == 'del':
+        bot.send_message(message.chat.id, data_b.del_user(message.chat.id, message.text[4:]))
     else:
-        bot.send_message(message.chat.id, get_weather_info(message.text))
+        bot.send_message(message.chat.id, get_weather.get_weather_info(message.text))
 
 
 if __name__ == '__main__':
