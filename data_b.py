@@ -1,46 +1,41 @@
 import os
 import json
 
-users = {'users': []}
+if not os.path.isfile('users_db.json'):
+    with open('users_db.json', 'w') as db:
+        json.dump({'users': []}, db)
 
 
-def get_all_keys(dict_users):
-    keys = []
+def check_key(data_users, user_id):
+    for user in data_users['users']:
+        for key in user.items():
+            if user_id == int(key[0]):
+                return False
+    return True
+
+
+def get_user(user_id, city):
     try:
-        for user in dict_users['users']:
-            for key in user.items():
-                keys.append(int(key[0]))
-        return keys
-    except KeyError:
-        pass
-
-
-def create_user(user_id, city):
-    if not os.path.isfile('users_db.json'):
-        users['users'].append({user_id: city})
-        with open('users_db.json', 'w', encoding='utf-8') as db_cr:
-            json.dump(users, db_cr)
-        return 'Added.'
-    else:
-        with open('users_db.json', 'r', encoding='utf-8') as db_r:
-            json_text = json.load(db_r)
-        if (user_id not in get_all_keys(json_text)) or not json_text['users']:
-            json_text['users'].append({user_id: city})
-            with open('users_db.json', 'w', encoding='utf-8') as db_add:
-                json.dump(json_text, db_add)
-            return 'Added.'
-        else:
-            return 'User already exists.'
+        with open('users_db.json', 'r+') as db_get:
+            data_users = json.load(db_get)
+            if check_key(data_users, user_id):
+                data_users['users'].append({user_id: city})
+                db_get.seek(0)
+                json.dump(data_users, db_get)
+                db_get.truncate()
+                return True
+    except NameError:
+        return False
 
 
 def del_user(user_id, city):
     try:
-        with open('users_db.json', 'r', encoding='utf-8') as db_rdel:
-            json_del = json.load(db_rdel)
-        dl_user = {str(user_id): city}
-        json_del['users'].remove(dl_user)
-        with open('users_db.json', 'w', encoding='utf-8') as db__wdel:
-            json.dump(json_del, db__wdel)
+        with open('users_db.json', 'r+') as user_remove:
+            data_users = json.load(user_remove)
+            user_remove.seek(0)
+            data_users['users'].remove({str(user_id): city})
+            json.dump(data_users, user_remove)
+            user_remove.truncate()
         return 'Deleted.'
     except ValueError:
         return 'Wrong city or your city not in list. Try again!'
