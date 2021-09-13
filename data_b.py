@@ -8,9 +8,8 @@ if not os.path.isfile('users_db.json'):
 
 def check_key(data_users, user_id):
     for user in data_users['users']:
-        for key in user.items():
-            if user_id == int(key[0]):
-                return False
+        if user_id == int(*user.keys()):
+            return False
     return True
 
 
