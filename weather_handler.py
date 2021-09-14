@@ -1,10 +1,8 @@
-import telebot
+from bot import bot
 import config
-from telebot import types
 import data_b
 import get_weather
-
-bot = telebot.TeleBot(config.TOKEN)
+import buttons
 
 
 @bot.message_handler(commands=['start'])
@@ -16,19 +14,23 @@ def start(message):
 
 @bot.message_handler(commands=['help'])
 def helper(message):
-    bot.send_message(message.chat.id, 'Commands:\nadd (city) - add or create new user.\ndel (city) - delete user.')
+    bot.send_message(message.chat.id,
+                     '''Commands:\nget - for get info about user.\nadd (your city) - add\
+ or create new user.\ndel (your city) - delete user.\nupdate (your city) - update user.''')
 
 
 @bot.message_handler(content_types=['text'])
 def change(message):
-    if message.text[0:3].lower() == 'add':
-        markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-        item = types.KeyboardButton(f'{message.text[4:]}')
-        markup.add(item)
-        if data_b.get_user(message.chat.id, message.text[4:]):
-            bot.send_message(message.chat.id, 'Added.', reply_markup=markup)
+    if message.text.lower() == 'get':
+        bot.send_message(message.chat.id, data_b.get_user(message.chat.id))
+    elif message.text[0:3].lower() == 'add':
+        if data_b.add_user(message.chat.id, message.text[4:]):
+            bot.send_message(message.chat.id, 'Added.', reply_markup=buttons.city_button(message.text[4:]))
         else:
             bot.send_message(message.chat.id, 'User already exists')
+    elif message.text[0:6].lower() == 'update':
+        bot.send_message(message.chat.id, data_b.update_user(message.chat.id, message.text[7:]),
+                         reply_markup=buttons.city_button(message.text[7:]))
     elif message.text[0:3].lower() == 'del':
         bot.send_message(message.chat.id, data_b.del_user(message.chat.id, message.text[4:]))
     else:
