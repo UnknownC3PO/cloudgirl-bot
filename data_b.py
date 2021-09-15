@@ -6,13 +6,6 @@ if not os.path.isfile('users_db.json'):
         json.dump({'users': []}, db)
 
 
-def check_key(data_users, user_id):
-    for user in data_users['users']:
-        if user_id == int(user['id']):
-            return False
-    return True
-
-
 def get_user(user_id):
     with open('users_db.json', 'r') as db_get:
         data_users = json.load(db_get)
@@ -26,11 +19,13 @@ def add_user(user_id, city):
     try:
         with open('users_db.json', 'r+') as db_add:
             data_users = json.load(db_add)
-            if check_key(data_users, user_id):
-                data_users['users'].append({'id': user_id, 'city': city})
-                db_add.seek(0)
-                json.dump(data_users, db_add)
-                db_add.truncate()
+            for user in data_users['users']:
+                if user_id == int(user['id']):
+                    return False
+            data_users['users'].append({'id': user_id, 'city': city})
+            db_add.seek(0)
+            json.dump(data_users, db_add)
+            db_add.truncate()
             return True
     except NameError:
         return False
