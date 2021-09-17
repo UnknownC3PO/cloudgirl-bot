@@ -19,22 +19,34 @@ def helper(message):
  or create new user.\ndel (your city) - delete user.\nupdate (your city) - update user.''')
 
 
+@bot.message_handler(commands=['get'])
+def get(message):
+    bot.send_message(message.chat.id, data_b.get_user(message.chat.id))
+
+
+@bot.message_handler(commands=['add'])
+def add(message):
+    if data_b.add_user(message.chat.id, message.text[5:]):
+        bot.send_message(message.chat.id, 'Added.', reply_markup=buttons.city_button(message.text[5:]))
+
+
+@bot.message_handler(commands=['update'])
+def update(message):
+    if data_b.update_user(message.chat.id, message.text[8:]):
+        bot.send_message(message.chat.id, 'Updated.',
+                         reply_markup=buttons.city_button(message.text[8:]))
+
+
+@bot.message_handler(commands=['del'])
+def delete(message):
+    bot.send_message(message.chat.id, message.text[5:])
+    if data_b.del_user(message.chat.id, message.text[5:]):
+        bot.send_message(message.chat.id, 'Deleted.')
+
+
 @bot.message_handler(content_types=['text'])
 def change(message):
-    if message.text.lower() == 'get':
-        bot.send_message(message.chat.id, data_b.get_user(message.chat.id))
-    elif message.text[0:3].lower() == 'add':
-        if data_b.add_user(message.chat.id, message.text[4:]):
-            bot.send_message(message.chat.id, 'Added.', reply_markup=buttons.city_button(message.text[4:]))
-        else:
-            bot.send_message(message.chat.id, 'User already exists')
-    elif message.text[0:6].lower() == 'update':
-        bot.send_message(message.chat.id, data_b.update_user(message.chat.id, message.text[7:]),
-                         reply_markup=buttons.city_button(message.text[7:]))
-    elif message.text[0:3].lower() == 'del':
-        bot.send_message(message.chat.id, data_b.del_user(message.chat.id, message.text[4:]))
-    else:
-        bot.send_message(message.chat.id, get_weather.get_weather_info(message.text))
+    bot.send_message(message.chat.id, get_weather.get_weather_info(message.text))
 
 
 if __name__ == '__main__':
