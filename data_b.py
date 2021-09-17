@@ -1,5 +1,6 @@
 import os
 import json
+import logging
 
 if not os.path.isfile('users_db.json'):
     with open('users_db.json', 'w') as db:
@@ -27,8 +28,8 @@ def add_user(user_id, city):
             json.dump(data_users, db_add)
             db_add.truncate()
             return True
-    except NameError as err:
-        raise err
+    except NameError:
+        logging.exception('UserError')
 
 
 def del_user(user_id, city):
@@ -40,8 +41,8 @@ def del_user(user_id, city):
             json.dump(data_users, user_remove)
             user_remove.truncate()
         return True
-    except ValueError as err:
-        raise err
+    except ValueError:
+        logging.exception('UserError')
 
 
 def update_user(user_id, city):
@@ -57,5 +58,5 @@ def update_user(user_id, city):
                     json.dump(data_users, user_update)
                     user_update.truncate()
                     return True
-    except ValueError as err:
-        raise err
+    except ValueError:
+        logging.exception('UserError')
