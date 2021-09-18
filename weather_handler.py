@@ -39,7 +39,6 @@ def update(message):
 
 @bot.message_handler(commands=['del'])
 def delete(message):
-    bot.send_message(message.chat.id, message.text[5:])
     if data_b.del_user(message.chat.id, message.text[5:]):
         bot.send_message(message.chat.id, 'Deleted.')
 
