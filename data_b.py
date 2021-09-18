@@ -51,7 +51,6 @@ def update_user(user_id, city):
             data_users = json.load(user_update)
             for user in data_users['users']:
                 if user_id == user['id']:
-                    user_update.seek(0)
                     data_users['users'].remove({'id': user_id, 'city': user['city']})
                     data_users['users'].append({'id': int(user_id), 'city': city})
                     user_update.seek(0)
