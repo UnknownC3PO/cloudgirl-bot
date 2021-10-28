@@ -2,5 +2,3 @@ env/
 venv/
 *.pyc
 __pycache__/
-config.txt
-config.py
