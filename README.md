@@ -8,4 +8,4 @@ Write /help for more info.
 
 -json file for database
 
-Delpoyed on Heroku
+Delpoyed on Heroku.
