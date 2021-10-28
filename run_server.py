@@ -3,13 +3,11 @@ from telebot import types
 import config
 from weather_handler import bot
 import os
-from bot import TOKEN
  
 server = flask.Flask(__name__)
-api_name = os.getenv('APP_NAME')
  
  
-@server.route('/' + TOKEN, methods=['POST'])
+@server.route('/' + config.TOKEN, methods=['POST'])
 def get_message():
     bot.process_new_updates([types.Update.de_json(
          flask.request.stream.read().decode("utf-8"))])
@@ -19,7 +17,7 @@ def get_message():
 @server.route('/', methods=["GET"])
 def index():
     bot.remove_webhook()
-    bot.set_webhook(url="https://{}.herokuapp.com/{}".format(app_name, TOKEN))
+    bot.set_webhook(url="https://{}.herokuapp.com/{}".format(config.APP_NAME, config.TOKEN))
     return "Hello from Heroku!", 200
  
  
