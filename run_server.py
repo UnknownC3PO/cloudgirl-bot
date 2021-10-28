@@ -9,7 +9,7 @@ TOKEN = None
 with open("token.txt") as f:
         TOKEN = f.read().strip()
  
-@server.route('/' + config.TOKEN, methods=['POST'])
+@server.route('/' + TOKEN, methods=['POST'])
 def get_message():
     bot.process_new_updates([types.Update.de_json(
          flask.request.stream.read().decode("utf-8"))])
