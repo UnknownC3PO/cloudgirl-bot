@@ -1,6 +1,6 @@
 import time
 import requests
-import config
+from secret import config
 
 
 def parse(json_weather):
