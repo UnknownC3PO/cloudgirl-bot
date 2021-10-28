@@ -1,6 +1,7 @@
 import time
 import requests
 import config
+import os
 
 
 def parse(json_weather):
@@ -18,8 +19,9 @@ def parse(json_weather):
 
 
 def get_weather_info(city):
+    api_key = os.getenv('API_KEY')
     try:
-        url = f'http://api.openweathermap.org/data/2.5/weather?q={city}&appid={config.API_key}'
+        url = f'http://api.openweathermap.org/data/2.5/weather?q={city}&appid={api_key}'
         r = requests.get(url)
         if r.status_code == 200:
             return parse(r.json())
