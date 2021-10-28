@@ -1,6 +1,7 @@
 import flask
 from telebot import types
 from weather_handler import bot
+import config
 import os
  
 server = flask.Flask(__name__)
