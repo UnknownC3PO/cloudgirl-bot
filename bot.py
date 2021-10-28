@@ -1,3 +1,6 @@
 import telebot
-from secret import config
-bot = telebot.TeleBot(config.TOKEN)
+#import config
+TOKEN = None
+with open("token.txt") as f:
+    TOKEN = f.read().strip()
+bot = telebot.TeleBot(TOKEN)
