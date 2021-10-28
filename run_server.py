@@ -1,6 +1,6 @@
 import flask
 from telebot import types
-import config
+from secret import config
 from weather_handler import bot
 import os
  
