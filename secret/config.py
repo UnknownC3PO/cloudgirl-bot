@@ -1,3 +1,6 @@
-API_key = '6120a59d8e15952b6977b0cf445e2f9d'
-TOKEN = '1965007379:AAGBRO-V47nUex5aY6wk6KA7Rc0YB33n-c8'
-APP_NAME = 'cloudgirl-bot'
+from decouple import config
+
+API_key = config('API_key',default='')
+TOKEN = config('TOKEN',default='')
+APP_NAME = config('APP_NAME',default='')
+
