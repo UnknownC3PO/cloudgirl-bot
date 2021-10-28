@@ -1,4 +1,4 @@
 pyTelegramBotApi
 flask
 gunicorn
-
+python-decouple
