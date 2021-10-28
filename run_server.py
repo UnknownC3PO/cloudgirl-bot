@@ -5,7 +5,9 @@ import config
 import os
  
 server = flask.Flask(__name__)
-TOKEN = None 
+TOKEN = None
+with open("token.txt") as f:
+        TOKEN = f.read().strip()
  
 @server.route('/' + config.TOKEN, methods=['POST'])
 def get_message():
@@ -16,8 +18,6 @@ def get_message():
  
 @server.route('/', methods=["GET"])
 def index():
-    with open("token.txt") as f:
-        TOKEN = f.read().strip()
     bot.remove_webhook()
     bot.set_webhook(url="https://{}.herokuapp.com/{}".format(config.APP_NAME, TOKEN))
     return "Hello from Heroku!", 200
