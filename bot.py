@@ -1,3 +1,3 @@
 import telebot
-import config
+from secret import config
 bot = telebot.TeleBot(config.TOKEN)
